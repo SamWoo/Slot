@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Slot</string>
+    <string name="copyright">All copyright @Sam-Brother</string>
+    <string name="msg_coin">您当前的金币数大于10个，只有当金币总数少于10个时才可以获取额外的金币！！
+        \n请您继续游戏，当金币不足时我们会及时通知您！！
+        \n祝您好运！！</string>
+    <string name="msg_help">
+    <b>作者: SamBrother</b>
+    \n
+    Slot水果机的UI是仿"花果水果机"UI,主要作为游戏开发练手项目，请勿用作其他商业用途！！如若因此牵扯到法律问题，与作者概不相关！！
+    \n
+    <b>有任何建议或者反馈可以随时联系作者</b>
+    </string>
+    <string name="app_version_name">1.0.0</string>
+</resources>
