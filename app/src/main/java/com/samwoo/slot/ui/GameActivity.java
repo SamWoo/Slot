@@ -2,12 +2,6 @@ package com.samwoo.slot.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
@@ -103,7 +97,7 @@ public class GameActivity extends BaseActivity {
                     GameRule.scoreTotal--;
                     ++GameRule.pointBar;
                 } else {
-                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_77:
@@ -115,7 +109,7 @@ public class GameActivity extends BaseActivity {
                     GameRule.scoreTotal--;
                     ++GameRule.point_77;
                 } else {
-                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_star:
@@ -127,7 +121,7 @@ public class GameActivity extends BaseActivity {
                     GameRule.scoreTotal--;
                     ++GameRule.pointStar;
                 } else {
-                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_watermelon:
@@ -139,7 +133,7 @@ public class GameActivity extends BaseActivity {
                     GameRule.scoreTotal--;
                     ++GameRule.pointWatermelon;
                 } else {
-                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_bell:
@@ -151,7 +145,7 @@ public class GameActivity extends BaseActivity {
                     GameRule.scoreTotal--;
                     ++GameRule.pointBell;
                 } else {
-                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_mango:
@@ -163,7 +157,7 @@ public class GameActivity extends BaseActivity {
                     GameRule.scoreTotal--;
                     ++GameRule.pointMango;
                 } else {
-                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_orange:
@@ -175,7 +169,7 @@ public class GameActivity extends BaseActivity {
                     GameRule.scoreTotal--;
                     ++GameRule.pointOrange;
                 } else {
-                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_apple:
@@ -187,7 +181,7 @@ public class GameActivity extends BaseActivity {
                     GameRule.scoreTotal--;
                     ++GameRule.pointApple;
                 } else {
-                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -199,7 +193,7 @@ public class GameActivity extends BaseActivity {
                     gameView.startGame();
 
                 } else {
-                    Toast.makeText(this, "请先下注再游戏！！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "请先下注再游戏！！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_all:
@@ -218,7 +212,7 @@ public class GameActivity extends BaseActivity {
                     ++GameRule.pointWatermelon;
                     ++GameRule.pointStar;
                 } else {
-                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "你已超过下注的最大上限！！", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
