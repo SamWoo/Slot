@@ -20,6 +20,8 @@ public class LoadResource {
     public static List<Bitmap> digtalList = new ArrayList<Bitmap>();
     public static List<Bitmap> bgList = new ArrayList<Bitmap>();
     public static List<Bitmap> luckyPictureList = new ArrayList<Bitmap>();
+    public static List<Bitmap> flashLedList = new ArrayList<Bitmap>();
+    public static List<Bitmap> randomBgList = new ArrayList<Bitmap>();
 
     public static SoundPool soundPool;
     public static int btn_sound_bar;
@@ -77,19 +79,26 @@ public class LoadResource {
      */
     public static void loadGameImage(Context context) {
         try {
+            //加载0~9数码Led
             for (int i = 0; i < 10; i++) {
                 Bitmap bmp = BitmapFactory.decodeStream(context.getAssets().open("digtal/digtal_" + i + ".png"));
                 digtalList.add(bmp);
             }
-
+            //加载大三元、大满贯等图片
             for (int i = 1; i < 7; i++) {
                 Bitmap bmp = BitmapFactory.decodeStream(context.getAssets().open("pic/pic_" + i + ".png"));
                 luckyPictureList.add(bmp);
             }
-
+            //加载中奖闪烁的JP灯图片
+            for(int i = 0; i < 2; i++){
+                Bitmap bmp = BitmapFactory.decodeStream(context.getAssets().open("flash/flash_led_" + i + ".png"));
+            }
+            //加载中奖随机数显示区背景图片
+            Bitmap bitmap = BitmapFactory.decodeStream(context.getAssets().open("random_bg" + ".png"));
+            randomBgList.add(bitmap);
+            //加载游戏区的背景图片
             Bitmap bmp = BitmapFactory.decodeStream(context.getAssets().open("machine_bg" + ".png"));
             bgList.add(bmp);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
