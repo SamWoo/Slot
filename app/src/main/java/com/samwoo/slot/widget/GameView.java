@@ -37,6 +37,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private List<RectF> totalScore = new ArrayList<RectF>();
     private List<RectF> winScore = new ArrayList<RectF>();
     private List<RectF> betScore = new ArrayList<RectF>();
+    private List<RectF> randomNumRectF=new ArrayList<RectF>();//中间Led闪烁灯下的随机数显示区
     private List<Integer> selectedPointList = new ArrayList<Integer>();
     private List<Integer> betPointList = new ArrayList<Integer>();
 
@@ -46,10 +47,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private Bitmap bitmap = null;//前景图
     private RectF bgRectF = null;//背景图区
     private RectF showRectF;//中奖图片显示区
+    private RectF ledRectF;//中间Led闪烁灯显示区
+    private RectF randomBgRectF;//随机数背景区
+    
 
     public static boolean isGame = false;//控制画图线程
     public static boolean isRunning = false;//是否正在转圈
-    private boolean isFlash = false;//控制闪烁
+    private boolean isFlash = false;//控制灯闪烁
     private boolean isWorked = false;//是否第一次启动
     public static boolean isContinueBet = false;//是否继续下注
     private boolean isSecond = false;//再次启动
@@ -86,7 +90,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         public Bitmap bmp;
     }
 
-    Handler handler = new Handler() {
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -188,7 +192,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
      * 画数字显示区和中奖图片显示区
      */
     private void drawRectF() {
+        //背景图显示区
         bgRectF = new RectF(0, 0, screenWidth, screenHeight);
+        //随机数背景图区
+        randomBgRectF = new RectF(Configs.getRateWidth(210),
+                Configs.getRateHeight(386), 
+                Configs.getRateWidth(272),
+                Configs.getRateHeight(422));
         // 显示分数区域
         for (int i = 0; i < 8; i++) {
             RectF score = new RectF(Configs.getRateWidth(420 - i * 23),
@@ -203,23 +213,33 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
                     Configs.getRateHeight(132));
             winScore.add(win);
         }
-
         //下注点数数码管显示区域
         for (int i = 0; i < 23; i++) {
             if (i == 2 || i == 5 || i == 8 || i == 11 || i == 14 || i == 17
                     || i == 20)
                 continue;
-            RectF xia = new RectF(Configs.getRateWidth((int) (438 - i * 18.5)),
+            RectF bet = new RectF(Configs.getRateWidth((int) (438 - i * 18.5)),
                     Configs.getRateHeight(670),
                     Configs.getRateWidth((int) (454 - i * 18.5)),
                     Configs.getRateHeight(694));
-            betScore.add(xia);
+            betScore.add(bet);
         }
-
         // 中奖后效果区域
         showRectF = new RectF(Configs.getRateWidth(100),
                 Configs.getRateHeight(200), Configs.getRateWidth(380),
                 Configs.getRateHeight(500));
+        //中间Led闪烁显示区
+        ledRectF=new RectF(Configs.getRateWidth(217),
+                Configs.getRateHeight(323), Configs.getRateWidth(265),
+                Configs.getRateHeight(371));
+        //中间随机数显示区
+        for(int i = 0; i < 2; i++){
+            RectF randomNum = new RectF(Configs.getRateWidth(210 - i * 18.5),
+                Configs.getRateHeight(386), 
+                Configs.getRateWidth(272-i * 18.5),
+                Configs.getRateHeight(422));
+            randomNumRectF.add(randomNum);
+        }
     }
 
     /**
@@ -296,8 +316,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-//        this.screenHeight = i2;
-//        this.screenWidth = i1;
+       this.screenHeight = i2;
+       this.screenWidth = i1;
     }
 
     @Override
@@ -364,7 +384,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
                 if (null != mCanvas) {
                     holder.unlockCanvasAndPost(mCanvas);
                 }
-
             }
         }
     }
@@ -376,6 +395,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
      */
     private void onDraws(Canvas canvas) {
         canvas.drawBitmap(LoadResource.bgList.get(0), null, bgRectF, null);
+        canvas.drawBitmap(LoadResource.flashLedList.get(0), null, ledRectF, null);
+        canvae.drawBitmap(LoadResource.randomBgList.get(0), null, randomBgRectF, null);
+        
         if (null != itemInfos) {
             for (int i = 0; i < itemInfos.size(); i++) {
                 canvas.drawBitmap(itemInfos.get(i).bmp, null,
@@ -439,7 +461,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
      */
     private void gameRunAround(Canvas canvas) {
         canvas.save();
-
+        //控制中间Led灯闪烁
+        if(isFlash){
+            canvas.drawBitmap(LoadResource.flashLedList.get(0), null, ledRectF, null);
+        }else{
+            canvas.drawBitmap(LoadResource.flashLedList.get(1), null, ledRectF, null);
+        }
+        
         if (isRunning) {
             ++currentPosition;
             if (count < 5) {
@@ -594,6 +622,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
                             endCount++;
                             currentPosition++;
                             if (endCount == 2) {
+                                isFlash = false;
                                 GameRule.stopBgSound();
                                 if (destPosition == 9 || destPosition == 21) {
                                     LoadResource.soundPool.play(LoadResource.sound_select, 1, 1, 0, 0, 1);
@@ -636,6 +665,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         canvas.save();
         char[] strTotalScore = strToCharArr(GameRule.scoreTotal);
         char[] strWinScore = strToCharArr(GameRule.scoreWin);
+        char[] strRandomNum = strToCharArr(new Random().nextInt(99));
+        
         for (int i = 0; i < strTotalScore.length; i++) {
             canvas.drawBitmap(LoadResource.digtalList
                             .get(Integer.parseInt(String.valueOf(strTotalScore[strTotalScore.length - 1 - i]))),
@@ -651,6 +682,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         for (int i = 0; i < 16; i++) {
             getBetPoint();
             canvas.drawBitmap(LoadResource.digtalList.get(betPointList.get(i)), null, betScore.get(i), null);
+        }
+        
+        //中间随机数显示区
+        for(int i = 0; i < 2; i++){
+            canvas.drawBitmap(LoadResource.digtalList
+                              .get(Integer.parseInt(String.valueOf(strRandomNUm[strRandomNum.length -1 - i]))),
+                             null, randomNumRectF.get(i), null);
         }
         canvas.restore();
     }
@@ -969,7 +1007,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
      */
     private void driveTrain(Canvas canvas) {
         canvas.save();
-
         canvas.drawBitmap(LoadResource.luckyPictureList.get(3), null, showRectF, null);
 
         for (int i = 0; i < 5; i++) {
