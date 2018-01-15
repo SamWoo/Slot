@@ -21,6 +21,7 @@ import com.samwoo.slot.common.LoadResource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Administrator on 2018/1/8.
@@ -37,7 +38,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private List<RectF> totalScore = new ArrayList<RectF>();
     private List<RectF> winScore = new ArrayList<RectF>();
     private List<RectF> betScore = new ArrayList<RectF>();
-    private List<RectF> randomNumRectF=new ArrayList<RectF>();//中间Led闪烁灯下的随机数显示区
+    private List<RectF> randomNumRectF = new ArrayList<RectF>();//中间Led闪烁灯下的随机数显示区
     private List<Integer> selectedPointList = new ArrayList<Integer>();
     private List<Integer> betPointList = new ArrayList<Integer>();
 
@@ -49,7 +50,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private RectF showRectF;//中奖图片显示区
     private RectF ledRectF;//中间Led闪烁灯显示区
     private RectF randomBgRectF;//随机数背景区
-    
+
 
     public static boolean isGame = false;//控制画图线程
     public static boolean isRunning = false;//是否正在转圈
@@ -67,6 +68,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private int lastPosition = 0;//上次位置
     private int destPosition = 0;//目标位置
     public static int randomPosition = 0;//随机位置
+    private int randomNum = 0;//随机数
 
     private int gameState = 0;
     private static final int IS_LUCK_STATE = 40;
@@ -186,6 +188,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         new Thread(this).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    randomNum = new Random().nextInt(99);
+                    sleep(200);
+                }
+            }
+        }).start();
     }
 
     /**
@@ -196,7 +207,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         bgRectF = new RectF(0, 0, screenWidth, screenHeight);
         //随机数背景图区
         randomBgRectF = new RectF(Configs.getRateWidth(210),
-                Configs.getRateHeight(386), 
+                Configs.getRateHeight(386),
                 Configs.getRateWidth(272),
                 Configs.getRateHeight(422));
         // 显示分数区域
@@ -229,15 +240,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
                 Configs.getRateHeight(200), Configs.getRateWidth(380),
                 Configs.getRateHeight(500));
         //中间Led闪烁显示区
-        ledRectF=new RectF(Configs.getRateWidth(217),
+        ledRectF = new RectF(Configs.getRateWidth(217),
                 Configs.getRateHeight(323), Configs.getRateWidth(265),
                 Configs.getRateHeight(371));
         //中间随机数显示区
-        for(int i = 0; i < 2; i++){
-            RectF randomNum = new RectF(Configs.getRateWidth(210 - i * 18.5),
-                Configs.getRateHeight(386), 
-                Configs.getRateWidth(272-i * 18.5),
-                Configs.getRateHeight(422));
+        for (int i = 0; i < 2; i++) {
+            RectF randomNum = new RectF(Configs.getRateWidth((int) (242 - i * 24)),
+                    Configs.getRateHeight(392),
+                    Configs.getRateWidth((int) (260 - i * 24)),
+                    Configs.getRateHeight(416));
             randomNumRectF.add(randomNum);
         }
     }
@@ -316,8 +327,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-       this.screenHeight = i2;
-       this.screenWidth = i1;
+        this.screenHeight = i2;
+        this.screenWidth = i1;
     }
 
     @Override
@@ -395,9 +406,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
      */
     private void onDraws(Canvas canvas) {
         canvas.drawBitmap(LoadResource.bgList.get(0), null, bgRectF, null);
-        canvas.drawBitmap(LoadResource.flashLedList.get(0), null, ledRectF, null);
-        canvae.drawBitmap(LoadResource.randomBgList.get(0), null, randomBgRectF, null);
-        
+        canvas.drawBitmap(LoadResource.flashLedList.get(1), null, ledRectF, null);
+        canvas.drawBitmap(LoadResource.randomBgList.get(0), null, randomBgRectF, null);
+
         if (null != itemInfos) {
             for (int i = 0; i < itemInfos.size(); i++) {
                 canvas.drawBitmap(itemInfos.get(i).bmp, null,
@@ -441,9 +452,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
                     break;
             }
 
-            if (gameState != GameRule.NORMAL
+            if (gameState != GameRule.SPLOT_LIGHT
                     && gameState != GameRule.DRIVE_TRAIN
-                    && gameState != GameRule.SPLOT_LIGHT) {
+                    && gameState != GameRule.NORMAL) {
                 isFlash = !isFlash;
                 sleep(200);
             } else {
@@ -461,13 +472,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
      */
     private void gameRunAround(Canvas canvas) {
         canvas.save();
-        //控制中间Led灯闪烁
-        if(isFlash){
-            canvas.drawBitmap(LoadResource.flashLedList.get(0), null, ledRectF, null);
-        }else{
-            canvas.drawBitmap(LoadResource.flashLedList.get(1), null, ledRectF, null);
-        }
-        
+
         if (isRunning) {
             ++currentPosition;
             if (count < 5) {
@@ -665,8 +670,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         canvas.save();
         char[] strTotalScore = strToCharArr(GameRule.scoreTotal);
         char[] strWinScore = strToCharArr(GameRule.scoreWin);
-        char[] strRandomNum = strToCharArr(new Random().nextInt(99));
-        
+        char[] strRandomNum = strToCharArr(randomNum);
+
         for (int i = 0; i < strTotalScore.length; i++) {
             canvas.drawBitmap(LoadResource.digtalList
                             .get(Integer.parseInt(String.valueOf(strTotalScore[strTotalScore.length - 1 - i]))),
@@ -683,12 +688,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
             getBetPoint();
             canvas.drawBitmap(LoadResource.digtalList.get(betPointList.get(i)), null, betScore.get(i), null);
         }
-        
+
         //中间随机数显示区
-        for(int i = 0; i < 2; i++){
+        for (int i = 0; i < strRandomNum.length; i++) {
             canvas.drawBitmap(LoadResource.digtalList
-                              .get(Integer.parseInt(String.valueOf(strRandomNUm[strRandomNum.length -1 - i]))),
-                             null, randomNumRectF.get(i), null);
+                            .get(Integer.parseInt(String.valueOf(strRandomNum[strRandomNum.length - 1 - i]))),
+                    null, randomNumRectF.get(i), null);
         }
         canvas.restore();
     }
@@ -732,7 +737,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private void isLuckState() {
         if (destPosition == 9 || destPosition == 21) {
             int luck = GameRule.getLuck();
-//            int luck = 28;//debug
+//            int luck = 32;//debug
             sleep(1000);
             switch (luck) {
                 case 24:
@@ -828,7 +833,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private void smallThreeDragons(Canvas canvas) {
         if (isFlash) {
             canvas.save();
-
             canvas.drawBitmap(LoadResource.luckyPictureList.get(4), null, showRectF,
                     null);
 
@@ -863,7 +867,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private void bigThreeDragons(Canvas canvas) {
         if (isFlash) {
             canvas.save();
-
             canvas.drawBitmap(LoadResource.luckyPictureList.get(2), null, showRectF,
                     null);
 
@@ -898,7 +901,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private void grandSlam(Canvas canvas) {
         if (isFlash) {
             canvas.save();
-
             canvas.drawBitmap(LoadResource.luckyPictureList.get(1), null, showRectF,
                     null);
 
@@ -932,8 +934,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         if (!isFlag) {
             ++i;
             if (i % 3 == 0) {
-//                selectedPointList.add(i);
-//                Log.e("Slot", "Here===" + i);
+                selectedPointList.add(i);
                 canvas.save();
                 canvas.drawBitmap(getFgBitmap(), null,
                         new RectF(
@@ -956,6 +957,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
             }
         } else {
             for (Integer selected : selectedPointList) {
+
                 if (isFlash) {
                     canvas.save();
                     canvas.drawBitmap(getFgBitmap(), null,
@@ -964,6 +966,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
                                     itemInfos.get((randomPosition + selected) % 24).right,
                                     itemInfos.get((randomPosition + selected) % 24).bottom),
                             null);
+                    canvas.drawBitmap(LoadResource.flashLedList.get(1), null, ledRectF, null);
                     canvas.restore();
                 }
             }
@@ -979,6 +982,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private void nineGates(Canvas canvas) {
         if (isFlash) {
             canvas.save();
+            canvas.drawBitmap(LoadResource.flashLedList.get(1), null, ledRectF, null);
             for (int i = 0; i < 9; i++) {
                 canvas.drawBitmap(getFgBitmap(), null,
                         new RectF(
