@@ -300,7 +300,18 @@ public class GameActivity extends BaseActivity {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        GameRule.stopBgSound();
-        return super.onTouchEvent(event);
+        int action = event.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                GameRule.stopBgSound();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 }

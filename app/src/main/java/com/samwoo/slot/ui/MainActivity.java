@@ -5,16 +5,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.samwoo.slot.R;
 import com.samwoo.slot.base.BaseActivity;
 import com.samwoo.slot.common.GameRule;
 
 public class MainActivity extends BaseActivity {
+
+    private long lastTime = 0;
+    private long currentTime = 0;
+    private int clickCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +63,6 @@ public class MainActivity extends BaseActivity {
                     dialog.dismiss();
                 }
             });
-
         }
     }
 
@@ -84,13 +90,67 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
+     * 返回按键按下动作处理
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
+            lastTime = currentTime;
+            currentTime = System.currentTimeMillis();
+            if (currentTime - lastTime <= 2 * 1000) {
+                currentTime = 0;
+                lastTime = 0;
+                MainActivity.this.finish();
+            } else {
+                Toast.makeText(getApplicationContext(), getResources()
+                        .getString(R.string.exit_msg), Toast.LENGTH_SHORT)
+                        .show();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 退出游戏对话框
+     */
+    private void exitDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.NoBackGroundDialog);
+        View v = LayoutInflater.from(this).inflate(R.layout.layout_exit_msg, null);
+        Button btnOK = v.findViewById(R.id.btn_ok);
+        Button btnCancle = v.findViewById(R.id.btn_cancle);
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        dialog.getWindow().setContentView(v);
+        dialog.setCanceledOnTouchOutside(false);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.this.finish();
+                System.exit(0);
+            }
+        });
+        btnCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    /**
      * 退出游戏
      *
      * @param view
      */
     public void exitGame(View view) {
-        this.finish();
-        System.exit(0);
+        exitDialog();
     }
 
     /**

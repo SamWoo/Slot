@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:text="帮助"
+        android:text="@string/help"
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -53,7 +53,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_button"
         android:gravity="center"
-        android:text="OK"
+        android:text="@string/OK"
         android:textColor="#ffffff"
         android:textSize="16sp" />
 

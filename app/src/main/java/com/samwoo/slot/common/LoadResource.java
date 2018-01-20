@@ -71,7 +71,6 @@ public class LoadResource {
     public static int sound_compare_big_small;//比大小
 
 
-
     /**
      * 加载图片资源文件
      *
@@ -90,8 +89,9 @@ public class LoadResource {
                 luckyPictureList.add(bmp);
             }
             //加载中奖闪烁的JP灯图片
-            for(int i = 0; i < 2; i++){
+            for (int i = 0; i < 2; i++) {
                 Bitmap bmp = BitmapFactory.decodeStream(context.getAssets().open("flash/flash_led_" + i + ".png"));
+                flashLedList.add(bmp);
             }
             //加载中奖随机数显示区背景图片
             Bitmap bitmap = BitmapFactory.decodeStream(context.getAssets().open("random_bg" + ".png"));
@@ -154,7 +154,7 @@ public class LoadResource {
         sound_compare_big_small = soundPool.load(context, R.raw.big_small, 0);
         sound_turn_around = soundPool.load(context, R.raw.turn_around, 0);
         sound_splotlight = soundPool.load(context, R.raw.zha, 0);
-        sound_select=soundPool.load(context,R.raw.zhadengxuandeng,0);
+        sound_select = soundPool.load(context, R.raw.zhadengxuandeng, 0);
     }
 }
 
