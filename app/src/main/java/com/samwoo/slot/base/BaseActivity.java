@@ -15,7 +15,6 @@ import com.samwoo.slot.common.Configs;
  */
 
 public class BaseActivity extends AppCompatActivity {
-    public Animation animation;
     public int width;
     public int height;
 

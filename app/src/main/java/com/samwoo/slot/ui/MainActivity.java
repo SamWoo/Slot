@@ -16,6 +16,11 @@ import android.widget.Toast;
 import com.samwoo.slot.R;
 import com.samwoo.slot.base.BaseActivity;
 import com.samwoo.slot.common.GameRule;
+import com.samwoo.slot.database.DatabaseManager;
+import com.samwoo.slot.database.Rank;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends BaseActivity {
 
@@ -162,5 +167,14 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(MainActivity.this, AboutActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = df.format(new Date());
+        Rank rank = new Rank(null, "Sam", GameRule.scoreTotal, time);
+        DatabaseManager.getsInstance().addRank(rank);
     }
 }
