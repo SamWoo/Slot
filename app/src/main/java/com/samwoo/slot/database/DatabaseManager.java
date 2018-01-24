@@ -20,8 +20,10 @@ public class DatabaseManager {
     private static DatabaseManager sInstance;
     private DaoSession mDaoSession;
 
+    private DatabaseManager() {}
+
     //单例模式
-    public static DatabaseManager getsInstance() {
+    public static DatabaseManager getInstance() {
         if (null == sInstance) {
             synchronized (DatabaseManager.class) {
                 if (null == sInstance) {

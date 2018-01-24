@@ -175,6 +175,6 @@ public class MainActivity extends BaseActivity {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = df.format(new Date());
         Rank rank = new Rank(null, "Sam", GameRule.scoreTotal, time);
-        DatabaseManager.getsInstance().addRank(rank);
+        DatabaseManager.getInstance().addRank(rank);
     }
 }
