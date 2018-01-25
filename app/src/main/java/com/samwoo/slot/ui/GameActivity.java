@@ -191,7 +191,6 @@ public class GameActivity extends BaseActivity {
                 LoadResource.soundPool.play(LoadResource.btn_sound_start, 1, 1, 0, 0, 1);
                 if (GameRule.getBetScore() > 0) {
                     gameView.startGame();
-
                 } else {
                     Toast.makeText(this, "请先下注再游戏！！", Toast.LENGTH_SHORT).show();
                 }
@@ -253,6 +252,8 @@ public class GameActivity extends BaseActivity {
                     ++GameRule.scoreWin;
                     LoadResource.soundPool.play(LoadResource.btn_sound_start, 1, 1, 0, 0,
                             1);
+                } else {
+                    Toast.makeText(this, "您的金币余额不足以进行本次猜大小竞猜！！", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_left:

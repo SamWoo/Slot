@@ -18,6 +18,7 @@ import com.samwoo.slot.base.BaseActivity;
 import com.samwoo.slot.common.GameRule;
 import com.samwoo.slot.database.DatabaseManager;
 import com.samwoo.slot.database.Rank;
+import com.samwoo.slot.utils.ToastUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -112,9 +113,7 @@ public class MainActivity extends BaseActivity {
                 lastTime = 0;
                 MainActivity.this.finish();
             } else {
-                Toast.makeText(getApplicationContext(), getResources()
-                        .getString(R.string.exit_msg), Toast.LENGTH_SHORT)
-                        .show();
+                ToastUtils.showToastById(getApplicationContext(), R.string.exit_msg);
             }
             return true;
         }

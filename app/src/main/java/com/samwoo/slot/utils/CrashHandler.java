@@ -106,13 +106,11 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             return false;
         }
         try {
-
-
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     Looper.prepare();
-                    Toast.makeText(context, R.string.crash_msg, Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToastById(context, R.string.crash_msg);
                     Looper.loop();
                 }
             }).start();
@@ -202,9 +200,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         //文件记录时间
         String time = formatter.format(new Date());
         //文件名
-        String fileName = "crash-" + time + ".log";
+        String fileName = "crash_" + time + ".log";
         //判断存储卡是否可用
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+        if (hasExternalStorage()) {
             //文件存储的绝对路径
             String path = Environment
                     .getExternalStorageDirectory()
@@ -226,5 +224,19 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             }
         }
         return fileName;
+    }
+
+    /**
+     * 判读外部存储空间是否可用
+     *
+     * @return
+     */
+    private boolean hasExternalStorage() {
+        String state = Environment.getExternalStorageState();
+        if (state != null && state.equals(Environment.MEDIA_MOUNTED)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
