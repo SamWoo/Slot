@@ -19,14 +19,15 @@
             android:layout_height="wrap_content"
             android:background="@drawable/start_game"
             android:onClick="startGame" />
-        <!--
-                <ImageButton
-                    android:id="@+id/btn_history"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/paiming" />
-        -->
+
+        <ImageButton
+            android:id="@+id/btn_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/paiming"
+            android:onClick="historyRank"/>
+
         <ImageButton
             android:id="@+id/btn_get_coin"
             android:layout_width="wrap_content"

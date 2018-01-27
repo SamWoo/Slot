@@ -85,6 +85,7 @@ public class DatabaseManager {
         List<Rank> mList = mDaoSession.getRankDao()
                 .queryBuilder()
                 .orderDesc(RankDao.Properties.Score)
+                .limit(10)
                 .list();
         return mList;
     }

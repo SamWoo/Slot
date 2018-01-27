@@ -20,6 +20,6 @@ public class SlotApplication extends Application {
 
     private void init() {
         DatabaseManager.getInstance().initDatabase(this);
-        CrashHandler.getInstance().init(this);
+//        CrashHandler.getInstance().init(this);
     }
 }

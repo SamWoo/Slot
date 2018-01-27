@@ -72,6 +72,13 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
+    public void historyRank(View view) {
+        Intent intent = new Intent(this, RankActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
+    }
+
     /**
      * 获取帮组
      *
@@ -171,7 +178,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String time = df.format(new Date());
         Rank rank = new Rank(null, "Sam", GameRule.scoreTotal, time);
         DatabaseManager.getInstance().addRank(rank);
