@@ -1,7 +1,10 @@
 package com.samwoo.slot.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +32,8 @@ import butterknife.ButterKnife;
 public class RankActivity extends BaseActivity {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout refreshLayout;
 
     private List<Rank> mList = new ArrayList<Rank>();
     private RecyclerAdapter adapter;
@@ -39,6 +44,7 @@ public class RankActivity extends BaseActivity {
         setContentView(R.layout.activity_rank);
         ButterKnife.bind(this);
         initRecyclerView();
+        initSwipeRefresh();
     }
 
     /**
@@ -46,9 +52,6 @@ public class RankActivity extends BaseActivity {
      */
     private void initRecyclerView() {
         mList = DatabaseManager.getInstance().queryAllRank();
-        for (int i = 0; i < mList.size(); i++) {
-            LogUtils.e("Slot", mList.get(i).getWinner() + "/" + mList.get(i).getTime() + "/" + mList.get(i).getScore());
-        }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RecyclerAdapter(this, mList);
         recyclerView.setAdapter(adapter);
@@ -57,13 +60,47 @@ public class RankActivity extends BaseActivity {
     }
 
     /**
+     * 初始化SwipeRefreshView
+     */
+    private void initSwipeRefresh() {
+        refreshLayout.setColorSchemeColors(Color.BLUE, Color.RED);
+        refreshLayout.setOnRefreshListener(onRefreshListener);
+    }
+
+    /**
+     * 设置swipeRefreshView 刷新监听
+     */
+    private SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            ToastUtils.showToast(getApplicationContext(), "正在刷新...");
+            adapter.notifyDataSetChanged();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshLayout.setRefreshing(false);
+                    ToastUtils.showToast(getApplicationContext(), "刷新完成！");
+                }
+            }, 2000);
+
+        }
+    };
+
+    /**
      * 删除历史记录
      *
      * @param view
      */
     public void deletAll(View view) {
         DatabaseManager.getInstance().deleteAllRank();
-        adapter.notifyDataSetChanged();
-        ToastUtils.showToastById(this, R.string.deleteMsg);
+        refreshLayout.setRefreshing(true);
+        adapter.notifyItemMoved(0, mList.size() - 1);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(false);
+                ToastUtils.showToastById(getApplicationContext(), R.string.deleteMsg);
+            }
+        }, 2000);
     }
 }

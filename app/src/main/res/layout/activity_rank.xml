@@ -2,24 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rank_bg"
-    android:orientation="vertical">
+    android:background="@drawable/rank_bg">
 
-    <ImageView
-        android:id="@+id/img_head"
-        android:layout_width="128dp"
-        android:layout_height="64dp"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/hero_bg" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/img_head">
+        android:layout_marginTop="84dp"
+        android:layout_marginBottom="64dp">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:layout_width="96dp"
@@ -33,6 +31,5 @@
         android:padding="8dp"
         android:text="清空记录"
         android:textColor="#ffffff" />
-
 
 </RelativeLayout>

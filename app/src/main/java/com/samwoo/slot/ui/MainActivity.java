@@ -1,17 +1,14 @@
 package com.samwoo.slot.ui;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.samwoo.slot.R;
 import com.samwoo.slot.base.BaseActivity;
@@ -27,7 +24,6 @@ public class MainActivity extends BaseActivity {
 
     private long lastTime = 0;
     private long currentTime = 0;
-    private int clickCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

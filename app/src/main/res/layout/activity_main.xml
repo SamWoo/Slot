@@ -34,7 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@drawable/get_coin"
-            android:onClick="getCoin" />
+            android:onClick="getCoin"
+            android:visibility="gone"/>
 
         <ImageButton
             android:id="@+id/btn_about_game"
@@ -58,7 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@drawable/help"
-            android:onClick="getHelp" />
+            android:onClick="getHelp"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </RelativeLayout>
