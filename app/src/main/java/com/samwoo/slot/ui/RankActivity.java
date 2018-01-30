@@ -92,9 +92,10 @@ public class RankActivity extends BaseActivity {
      * @param view
      */
     public void deletAll(View view) {
-        DatabaseManager.getInstance().deleteAllRank();
+        int itemCount = mList.size() - 1；
         refreshLayout.setRefreshing(true);
-        adapter.notifyItemMoved(0, mList.size() - 1);
+        DatabaseManager.getInstance().deleteAllRank();
+        adapter.notifyItemRangeRemoved(0, itemCount);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
