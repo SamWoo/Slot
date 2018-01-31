@@ -1,7 +1,9 @@
 package com.samwoo.slot.ui;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -24,11 +26,15 @@ public class MainActivity extends BaseActivity {
 
     private long lastTime = 0;
     private long currentTime = 0;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = getSharedPreferences("history", Context.MODE_PRIVATE);
+        GameRule.scoreTotal = sharedPreferences.getInt("scoreTotal", 100);
     }
 
     /**
@@ -114,6 +120,8 @@ public class MainActivity extends BaseActivity {
             if (currentTime - lastTime <= 2 * 1000) {
                 currentTime = 0;
                 lastTime = 0;
+                saveScore();
+
                 MainActivity.this.finish();
             } else {
                 ToastUtils.showToastById(getApplicationContext(), R.string.exit_msg);
@@ -139,6 +147,8 @@ public class MainActivity extends BaseActivity {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                saveScore();
+
                 MainActivity.this.finish();
                 System.exit(0);
             }
@@ -149,6 +159,16 @@ public class MainActivity extends BaseActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    /**
+     * 保存历史分数进数据库
+     */
+    private void saveScore() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String time = df.format(new Date());
+        Rank rank = new Rank(null, "Sam", GameRule.scoreTotal, time);
+        DatabaseManager.getInstance().addRank(rank);
     }
 
     /**
@@ -174,9 +194,5 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String time = df.format(new Date());
-        Rank rank = new Rank(null, "Sam", GameRule.scoreTotal, time);
-        DatabaseManager.getInstance().addRank(rank);
     }
 }

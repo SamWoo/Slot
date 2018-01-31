@@ -15,7 +15,6 @@ import com.samwoo.slot.adapter.RecyclerAdapter;
 import com.samwoo.slot.base.BaseActivity;
 import com.samwoo.slot.database.DatabaseManager;
 import com.samwoo.slot.database.Rank;
-import com.samwoo.slot.utils.LogUtils;
 import com.samwoo.slot.utils.ToastUtils;
 import com.samwoo.slot.widget.RecycleViewDivider;
 
@@ -81,7 +80,7 @@ public class RankActivity extends BaseActivity {
                     refreshLayout.setRefreshing(false);
                     ToastUtils.showToast(getApplicationContext(), "刷新完成！");
                 }
-            }, 2000);
+            }, 1000);
 
         }
     };
@@ -92,16 +91,14 @@ public class RankActivity extends BaseActivity {
      * @param view
      */
     public void deletAll(View view) {
-        int itemCount = mList.size() - 1；
         refreshLayout.setRefreshing(true);
-        DatabaseManager.getInstance().deleteAllRank();
-        adapter.notifyItemRangeRemoved(0, itemCount);
+        adapter.deletAll();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 refreshLayout.setRefreshing(false);
                 ToastUtils.showToastById(getApplicationContext(), R.string.deleteMsg);
             }
-        }, 2000);
+        }, 1000);
     }
 }

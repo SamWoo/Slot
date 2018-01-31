@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.samwoo.slot.R;
+import com.samwoo.slot.database.DatabaseManager;
 import com.samwoo.slot.database.Rank;
 import com.samwoo.slot.utils.LogUtils;
 
@@ -44,7 +45,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         final Rank item = mList.get(position);
         LogUtils.e("Slot", item.getWinner() + "/" + item.getTime() + "/" + item.getScore());
         holder.name.setText(item.getWinner());
-        holder.score.setText(item.getScore()+"");
+        holder.score.setText(item.getScore() + "");
         holder.time.setText(item.getTime());
         Glide.with(context).load(R.drawable.icon).into(holder.avatar);
     }
@@ -68,5 +69,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+    public void deletAll() {
+        DatabaseManager.getInstance().deleteAllRank();
+        notifyItemRangeRemoved(0, mList.size());
+        mList = null;
     }
 }
