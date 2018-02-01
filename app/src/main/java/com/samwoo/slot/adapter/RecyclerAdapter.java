@@ -28,6 +28,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public static final String TAG = "RecyclerAdapter";
     private List<Rank> mList = new ArrayList<>();
     private Context context;
+    //初始化监听接口
+    private OnClickItemListener listener;
+    //点击item监听接口，点击或长按
+    public interface OnClickItemListener{
+        public void OnClick(int position);
+        public void OnLongClick(int position);
+    }
+    //对外释放监听接口调用函数
+    public void setOnClickItemListener(OnClickItemListener listener){
+        if(null==listener){
+            this.listener=listener;
+        }
+    }
 
     public RecyclerAdapter(Context context, List<Rank> rankList) {
         this.context = context;
@@ -48,6 +61,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.score.setText(item.getScore() + "");
         holder.time.setText(item.getTime());
         Glide.with(context).load(R.drawable.icon).into(holder.avatar);
+        //点击动作触发处理函数
+        holder.itemview.setOnClickListener(new OnClickListener{
+            public void onClick(position){
+                listener.onClick(position);
+            }
+        });
+        //长按item处理函数
+        holder.itemview.setOnLongClickListener(new OnLongClickListener{
+            public void onLongClick(position){
+                listener.onLongClick(position);
+            }
+        });
     }
 
     @Override
@@ -71,9 +96,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
     }
 
+    //删除记录数据
     public void deletAll() {
         DatabaseManager.getInstance().deleteAllRank();
         notifyItemRangeRemoved(0, mList.size());
-        mList = null;
+        mList.clear();
     }
 }
