@@ -737,7 +737,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private void isLuckState() {
         if (destPosition == 9 || destPosition == 21) {
             int luck = GameRule.getLuck();
-//            int luck = 32;//debug
+//            int luck = 27;//debug
             sleep(1000);
             switch (luck) {
                 case 24:

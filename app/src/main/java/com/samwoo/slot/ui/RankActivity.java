@@ -1,5 +1,6 @@
 package com.samwoo.slot.ui;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,7 +9,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.samwoo.slot.R;
 import com.samwoo.slot.adapter.RecyclerAdapter;
@@ -56,6 +60,62 @@ public class RankActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL, R.drawable.recycleview_divider, false));
+        adapter.setOnClickItemListener(new RecyclerAdapter.OnClickItemListener() {
+            @Override
+            public void OnClick(final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(RankActivity.this, R.style.NoBackGroundDialog);
+                View v = LayoutInflater.from(RankActivity.this).inflate(R.layout.layout_delete_all_msg, null);
+                Button btnOK = v.findViewById(R.id.btn_ok);
+                Button btnCancle=v.findViewById(R.id.btn_cancle);
+                TextView promptMsg=v.findViewById(R.id.prompt_msg);
+                promptMsg.setText(R.string.delete_prompt_msg);
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                dialog.getWindow().setContentView(v);
+                dialog.setCanceledOnTouchOutside(false);
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        adapter.remove(position);
+                        dialog.dismiss();
+                    }
+                });
+                btnCancle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+
+            @Override
+            public void OnLongClick(int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(RankActivity.this, R.style.NoBackGroundDialog);
+                View v = LayoutInflater.from(RankActivity.this).inflate(R.layout.layout_delete_all_msg, null);
+                Button btnOK = v.findViewById(R.id.btn_ok);
+                Button btnCancle=v.findViewById(R.id.btn_cancle);
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                dialog.getWindow().setContentView(v);
+                dialog.setCanceledOnTouchOutside(false);
+                btnOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        adapter.deletAll();
+                        dialog.dismiss();
+                    }
+                });
+                btnCancle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
     }
 
     /**

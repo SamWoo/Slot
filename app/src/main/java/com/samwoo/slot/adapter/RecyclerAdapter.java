@@ -30,15 +30,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private Context context;
     //初始化监听接口
     private OnClickItemListener listener;
+
+    private int[] img_avatar = {R.drawable.avatar_0, R.drawable.avatar_1, R.drawable.avatar_2,
+            R.drawable.avatar_3, R.drawable.avatar_4, R.drawable.avatar_5, R.drawable.avatar_6,
+            R.drawable.avatar_7, R.drawable.avatar_8, R.drawable.avatar_9};
+
     //点击item监听接口，点击或长按
-    public interface OnClickItemListener{
+    public interface OnClickItemListener {
         public void OnClick(int position);
+
         public void OnLongClick(int position);
     }
+
     //对外释放监听接口调用函数
-    public void setOnClickItemListener(OnClickItemListener listener){
-        if(null==listener){
-            this.listener=listener;
+    public void setOnClickItemListener(OnClickItemListener listener) {
+        if (listener != null) {
+            this.listener = listener;
         }
     }
 
@@ -54,25 +61,40 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         final Rank item = mList.get(position);
         LogUtils.e("Slot", item.getWinner() + "/" + item.getTime() + "/" + item.getScore());
         holder.name.setText(item.getWinner());
         holder.score.setText(item.getScore() + "");
         holder.time.setText(item.getTime());
-        Glide.with(context).load(R.drawable.icon).into(holder.avatar);
+        Glide.with(context).load(img_avatar[position]).into(holder.avatar);
         //点击动作触发处理函数
-        holder.itemview.setOnClickListener(new OnClickListener{
-            public void onClick(position){
-                listener.onClick(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.OnClick(position);
             }
         });
         //长按item处理函数
-        holder.itemview.setOnLongClickListener(new OnLongClickListener{
-            public void onLongClick(position){
-                listener.onLongClick(position);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                listener.OnLongClick(position);
+                return false;
             }
         });
+        if (position == 0) {
+            Glide.with(context).load(R.drawable.gold_medal).into(holder.gold);
+            holder.gold.setVisibility(View.VISIBLE);
+        } else if (position == 1) {
+            Glide.with(context).load(R.drawable.silver_medal).into(holder.gold);
+            holder.gold.setVisibility(View.VISIBLE);
+        } else if (position == 2) {
+            Glide.with(context).load(R.drawable.bronze_medal).into(holder.gold);
+            holder.gold.setVisibility(View.VISIBLE);
+        } else {
+            holder.gold.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -89,6 +111,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         TextView time;
         @BindView(R.id.img_avatar)
         ImageView avatar;
+        @BindView(R.id.img_gold)
+        ImageView gold;
 
         public ViewHolder(View view) {
             super(view);
@@ -101,5 +125,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         DatabaseManager.getInstance().deleteAllRank();
         notifyItemRangeRemoved(0, mList.size());
         mList.clear();
+    }
+
+    //删除一条记录
+    public void remove(int position) {
+        Rank rank = mList.get(position);
+        Long id = rank.getId();
+        DatabaseManager.getInstance().deleteRank(id);
+
+        notifyItemRemoved(position);
+        mList.remove(position);
+        notifyDataSetChanged();//刷新List集合数据position
+
     }
 }

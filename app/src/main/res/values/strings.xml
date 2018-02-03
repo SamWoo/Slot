@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Slot</string>
+    <string name="app_name">Slots</string>
     <string name="copyright">All copyright @Sam-Brother</string>
     <string name="msg_coin">您当前的金币数大于10个，只有当金币总数少于10个时才可以获取额外的金币！！
         \n请您继续游戏，当金币不足时我们会及时通知您！！
@@ -20,5 +20,7 @@
     <string name="help">帮助</string>
     <string name="get_coin">获取金币</string>
     <string name="crash_msg">程序出现异常，即将重启！</string>
-    <string name="deleteMsg">历史记录已删除！</string>
+    <string name="deleteMsg">是否确定要删除全部历史记录？</string>
+    <string name="delete_prompt_msg">是否确定要删除该条记录？</string>
+    <string name="Notice">删除记录？</string>
 </resources>

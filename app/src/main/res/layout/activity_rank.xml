@@ -8,8 +8,7 @@
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="84dp"
-        android:layout_marginBottom="64dp">
+        android:layout_marginTop="80dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"
@@ -18,18 +17,5 @@
 
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
-
-    <TextView
-        android:layout_width="96dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/button_shape_corner"
-        android:gravity="center"
-        android:onClick="deletAll"
-        android:padding="8dp"
-        android:text="清空记录"
-        android:textColor="#ffffff" />
 
 </RelativeLayout>
