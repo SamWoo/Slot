@@ -5,14 +5,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.samwoo.slot.R;
 import com.samwoo.slot.base.BaseActivity;
+import com.samwoo.slot.common.Configs;
 import com.samwoo.slot.common.GameRule;
 import com.samwoo.slot.common.LoadResource;
 import com.samwoo.slot.widget.GameView;
@@ -65,6 +68,15 @@ public class GameActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        relativeLayout=findViewById(R.id.bg);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_button, null);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) Configs.getRateHeight(240));
+        params.setMargins(8, 2, 8, 2);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        view.setLayoutParams(params);
+        relativeLayout.addView(view);
+
         ButterKnife.bind(this);
 
         sp = getSharedPreferences("history", Context.MODE_PRIVATE);
