@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +33,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        sharedPreferences = getSharedPreferences("history", Context.MODE_PRIVATE);
-        GameRule.scoreTotal = sharedPreferences.getInt("scoreTotal", 100);
+//        sharedPreferences = getSharedPreferences("history", Context.MODE_PRIVATE);
+//        GameRule.scoreTotal = sharedPreferences.getInt("scoreTotal", 500);
     }
 
     /**
@@ -57,20 +57,7 @@ public class MainActivity extends BaseActivity {
         if ((GameRule.scoreTotal + GameRule.scoreWin) <= 10) {
             GameRule.scoreTotal += 100;
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.NoBackGroundDialog);
-            View v = LayoutInflater.from(this).inflate(R.layout.layout_coin_msg, null);
-            Button btnOK = v.findViewById(R.id.btn_ok);
-
-            final AlertDialog dialog = builder.create();
-            dialog.show();
-            dialog.getWindow().setContentView(v);
-            dialog.setCanceledOnTouchOutside(false);
-            btnOK.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
+            msgDialog(R.layout.layout_coin_msg);
         }
     }
 
@@ -88,8 +75,12 @@ public class MainActivity extends BaseActivity {
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void getHelp(View view) {
+        msgDialog(R.layout.layout_help_msg);
+    }
+
+    private void msgDialog(int resId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.NoBackGroundDialog);
-        View v = LayoutInflater.from(this).inflate(R.layout.layout_help_msg, null);
+        View v = LayoutInflater.from(this).inflate(resId, null);
         Button btnOK = v.findViewById(R.id.btn_ok);
 
         final AlertDialog dialog = builder.create();
@@ -121,7 +112,6 @@ public class MainActivity extends BaseActivity {
                 currentTime = 0;
                 lastTime = 0;
                 saveScore();
-
                 MainActivity.this.finish();
             } else {
                 ToastUtils.showToastById(getApplicationContext(), R.string.exit_msg);
@@ -148,7 +138,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 saveScore();
-
                 MainActivity.this.finish();
                 System.exit(0);
             }

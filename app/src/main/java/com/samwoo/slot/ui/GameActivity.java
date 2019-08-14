@@ -80,7 +80,7 @@ public class GameActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         sp = getSharedPreferences("history", Context.MODE_PRIVATE);
-        GameRule.scoreTotal = sp.getInt("scoreTotal", 100);
+        GameRule.scoreTotal = sp.getInt("scoreTotal", 500);
     }
 
     @Override

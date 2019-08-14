@@ -926,7 +926,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
      * 仙女闪花
      *
      * @param canvas
-     * @throws InterruptedException
+     * @throws
      */
     private int i = 0;//天女散花位置标记
 
