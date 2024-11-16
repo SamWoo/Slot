@@ -10,12 +10,12 @@
 # app运行效果图
 + Gif效果图 
 
-![Gif效果图](/screenshot/00.gif)
+![Gif效果图](https://github.com/SamWoo/Slot/raw/master/screenshot/00.gif)
 
 + 各分页效果图
 
 xx|xx|xx|xx|
 |:--:|:--:|:--:|:--:|
-|<img src="screenshot/1.jpg" width="180" height="360" alt="01"/>|<img src="screenshot/2.jpg" width="180" height="360" alt="02"/>|<img src="screenshot/3.jpg" width="180" height="360" alt="03"/>|<img src="screenshot/4.jpg" width="180" height="360" alt="04"/>
-|<img src="screenshot/5.jpg" width="180" height="360" alt="05"/>|<img src="screenshot/6.jpg" width="180" height="360" alt="06"/>|<img src="screenshot/7.jpg" width="180" height="360" alt="07"/>|<img src="screenshot/8.jpg" width="180" height="360" alt="08"/>
-|<img src="screenshot/9.jpg" width="180" height="360" alt="09"/>|
+|<img src="https://github.com/SamWoo/Slot/raw/master/screenshot/1.jpg" width="180" height="360" alt="01"/>|<img src="https://github.com/SamWoo/Slot/raw/master/screenshot/2.jpg" width="180" height="360" alt="02"/>|<img src="https://github.com/SamWoo/Slot/raw/master/screenshot/3.jpg" width="180" height="360" alt="03"/>|<img src="https://github.com/SamWoo/Slot/raw/master/screenshot/4.jpg" width="180" height="360" alt="04"/>
+|<img src="https://github.com/SamWoo/Slot/raw/master/screenshot/5.jpg" width="180" height="360" alt="05"/>|<img src="https://github.com/SamWoo/Slot/raw/master/screenshot/6.jpg" width="180" height="360" alt="06"/>|<img src="https://github.com/SamWoo/Slot/raw/master/screenshot/7.jpg" width="180" height="360" alt="07"/>|<img src="https://github.com/SamWoo/Slot/raw/master/screenshot/8.jpg" width="180" height="360" alt="08"/>
+|<img src="shttps://github.com/SamWoo/Slot/raw/master/creenshot/9.jpg" width="180" height="360" alt="09"/>|
